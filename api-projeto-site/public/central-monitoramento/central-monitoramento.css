@@ -340,10 +340,7 @@ button {
     }
 
     .usoCPUMemoria {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin: 10px;
+        display: none;
     }
 
     .cpuTodos,
@@ -426,6 +423,14 @@ button {
 
     .lista_com_img .fa-desktop {
         font-size: 50px;
+    }
+
+    .lista_processos {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: initial;
+        margin: -10px 5px 10px 5px;
     }
 
 }

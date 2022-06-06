@@ -278,7 +278,7 @@ button:hover {
 .card_cadastro_maquinas,
 .card_cadastro_excluir_maquinas {
     background-image: linear-gradient(#4f5065, #00c0e8);
-    border: 1px solid #4f5065;
+    border: 1px solid white;
     height: 450px;
     width: 400px;
     display: flex;

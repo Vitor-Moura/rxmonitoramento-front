@@ -1,0 +1,523 @@
+html {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Avenir';
+    color: #4f5065;
+}
+
+.body_sem_footer {
+    height: 100vh;
+    margin-bottom: 100px;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+}
+
+button {
+    padding: 5px 8px;
+    background-color: rgb(79, 80, 101);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-color: rgb(79, 80, 101);
+}
+
+button:hover {
+    box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.24);
+    transition: 0.3s;
+}
+
+/* HEADER */
+.header {
+    background-color: #4f5065;
+    color: white;
+    border-bottom: 3px solid #00c0e8;
+}
+
+.header .container {
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header .voltar_sair {
+    cursor: pointer;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+.header img {
+    height: 60px;
+}
+
+.menu {
+    display: flex;
+    list-style: none;
+    gap: 2.5rem;
+}
+
+.menu a {
+    text-decoration: none;
+    color: white;
+}
+
+.menu a:hover {
+    color: #00c1e8b1;
+    transition: 0.3s;
+}
+
+.btn-mobile {
+    display: none;
+}
+
+.agora {
+    font-weight: 700;
+    color: #00c0e8;
+}
+
+/* BANNER */
+.banner img {
+    width: 100%;
+}
+
+
+/* ENTENDA COMO */
+.entenda_como h1 {
+    text-align: center;
+    color: #4f5065;
+}
+
+.entenda_como p {
+    font-size: 19px;
+    text-align: justify;
+    text-indent: 50px;
+}
+
+/* TUDO QUE VOCÊ PRECISA SABER*/
+.tudo_que {
+    width: 40%;
+    background-color: white;
+    text-align: center;
+    border: solid #4f50659d;
+    border-radius: 10%;
+    margin: 1% 1% 1% 0%;
+}
+
+.tudo_que img {
+    width: 60%;
+    height: 50%;
+}
+
+.tudo_que h2 {
+    color: #4f5065;
+}
+
+.tudo_que p {
+
+    font-size: 19px;
+    text-align: justify;
+
+}
+
+.tudo_que .conteudo {
+    display: flex;
+    flex-direction: column;
+    align-items: center
+}
+
+.conteudo .paragrafoVideo {
+    width: 20%;
+
+}
+
+.bloco-conteudo {
+    display: flex;
+    justify-content: center;
+
+
+}
+
+/* TECNOLIGIA DE PONTA */
+.tecnologia {
+    /* padding-bottom: 30px; */
+    background-color: white;
+    width: 40%;
+    text-align: center;
+    border: solid #4f50659d;
+    border-radius: 10%;
+    margin: 1% 0% 1% 1%;
+}
+
+.tecnologia h2 {
+    color: #4f5065;
+}
+
+.tecnologia p {
+    font-size: 19px;
+    text-align: justify;
+}
+
+.tecnologia .conteudo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* COMO FUNCIONA */
+.como_funciona {
+    color: #4f5065;
+    font-weight: 500;
+    padding: 5px 0 40px 0;
+    background-image: linear-gradient(rgb(0, 192, 232), rgb(0, 192, 232, 0));
+    font-size: 18px;
+}
+
+.como_funciona h1 {
+    text-align: center;
+}
+
+.como_funciona p {
+    padding-right: 50px;
+    text-align: justify;
+}
+
+.como_funciona .conteudo {
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+/* MISSAO-VISAO-VALORES */
+.mvv {
+    margin-top: 20px;
+    color: #4f5065;
+    font-weight: 500;
+    padding: 5px 0 40px;
+    background-image: linear-gradient(rgb(0, 192, 232, 0), rgb(0, 192, 232));
+    font-size: 18px;
+}
+
+.mvv h1 {
+    font-size: 20px;
+    text-align: center;
+}
+
+.mvv p {
+    width: 250px;
+    text-align: justify;
+}
+
+.mvv .conteudo {
+    margin: 50px 10px 0 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* FOOTER */
+.footer .container,
+.footer_login .container {
+    display: flex;
+    justify-content: center;
+}
+
+.footer,
+.footer_login {
+    width: 100%;
+    background-color: #4f5065;
+    height: 100px;
+    color: white;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    border-top: 3px solid #00c0e8;
+}
+
+
+/* CADASTRO / LOGIN */
+.cadastro_login {
+    color: white;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.cadastro_login button {
+    margin-top: 17px;
+}
+
+.cadastro_login .container {
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+}
+
+.cadastro_login a {
+    color: white;
+    text-decoration: none;
+}
+
+.cadastro_login #div_erros_login {
+    margin-top: 15px;
+}
+
+.card_login,
+.card_cadastro {
+    justify-content: flex-start;
+}
+
+.card_login,
+.card_cadastro_usuario,
+.card_cadastro_hospital,
+.card_cadastro_setor,
+.card_cadastro_maquinas,
+.card_cadastro_excluir_maquinas {
+    background-image: linear-gradient(#4f5065, #00c0e8);
+    border: 1px solid #4f5065;
+    height: 450px;
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    align-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.card_cadastro_usuario {
+    height: 700px;
+}
+
+.card_cadastro_hospital {
+    height: 550px;
+    margin-bottom: 50px;
+}
+
+.card_cadastro_maquinas {
+    height: 550px;
+}
+
+.card_cadastro_excluir_maquinas .form {
+    display: flex;
+    flex-direction: column;
+}
+
+.pesquisar {
+    display: flex;
+    justify-content: flex-end;
+    /* margin-bottom: -16px; */
+    /* border: 1px solid white;
+    background-color: rgba(255, 255, 255, 0.1); */
+    /* padding: 1px 6px 3px 6px; */
+    cursor: pointer;
+}
+
+
+/* FORMULARIOS */
+input {
+    height: 30px;
+}
+
+select {
+    height: 35px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.loading-div {
+    width: 30px;
+    margin: auto;
+    display: none;
+}
+
+.loading-div img {
+    height: 30px;
+    width: 30px;
+}
+
+.botao-video {
+    border-radius: 10px;
+
+}
+
+
+
+/* MOBILE */
+@media screen and (max-width: 420px) {
+
+    /* HEADER */
+    .header img {
+        height: 50px;
+    }
+
+    #header_cadastro img {
+        height: 25px;
+    }
+
+    #header_cadastro h2 {
+        font-size: 14px;
+    }
+
+    #header_cadastro span {
+        font-size: 10px;
+    }
+
+    .btn-mobile {
+        display: flex;
+        padding: .5rem 1rem;
+        font-size: 1rem;
+        border: none;
+        background: none;
+        gap: .5rem;
+    }
+
+    .hamburguer {
+        border-top: 2px solid;
+        width: 20px;
+    }
+
+    .hamburguer::after,
+    .hamburguer::before {
+        content: '';
+        display: block;
+        width: 20px;
+        height: 2px;
+        background: currentColor;
+        margin-top: 5px;
+        transition: .6s;
+        position: relative;
+    }
+
+    .nav.active .hamburguer {
+        border-top-color: transparent;
+    }
+
+    .nav.active .hamburguer::before {
+        transform: rotate(135deg);
+    }
+
+    .nav.active .hamburguer::after {
+        transform: rotate(-135deg);
+        top: -7px;
+    }
+
+    .menu {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 0px;
+        transition: .6s;
+        top: 68px;
+        right: 0px;
+        background-color: #4f5065;
+        z-index: 1000;
+        visibility: hidden;
+        overflow-y: hidden;
+    }
+
+    .nav.active .menu {
+        display: block;
+        height: calc(70vh - 68px);
+        visibility: visible;
+        overflow-y: auto;
+    }
+
+    .menu li {
+        padding: 1rem 0;
+        margin: 0 1rem;
+        border-bottom: 2px solid #5d5d6b;
+        text-align: right;
+    }
+
+
+    /* ENTENDA COMO */
+    .entenda_como h1 {
+        font-size: 20px;
+    }
+
+    .entenda_como p {
+        font-size: 16px;
+    }
+
+    .bloco-conteudo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* TUDO QUE VOCÊ / TECNOLIGIA*/
+    /* TUDO QUE VOCÊ PRECISA SABER*/
+    .tudo_que,
+    .tecnologia {
+        width: 80%;
+        background-color: white;
+        text-align: center;
+        border: solid #4f50659d;
+        border-radius: 10%;
+        margin: 1% 1% 1% 0%;
+    }
+
+    .tudo_que img,
+    .tecnologia img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .tudo_que h2,
+    .tecnologia h2 {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .tudo_que p,
+    .tecnologia p {
+        text-align: justify;
+        font-size: 16px;
+    }
+
+    .tudo_que .conteudo,
+    .tecnologia .conteudo {
+        display: block;
+    }
+
+    /* COMO FUNCIONA */
+    .como_funciona h1 {
+        font-size: 20px;
+    }
+
+    .como_funciona p {
+        font-size: 16px;
+        text-align: justify;
+    }
+
+    .como_funciona .conteudo {
+        display: block;
+    }
+
+    .como_funciona img {
+        width: 100%;
+    }
+
+    /* MISSAO-VISAO-VALORES */
+    .mvv h1 {
+        font-size: 20px;
+    }
+
+    .mvv p {
+        width: 100%;
+        text-align: center;
+    }
+
+    .mvv .conteudo {
+        display: block;
+    }
+
+}

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RX monitoramento | Home</title>
+
+    <script src="./js/funcoes.js"></script>
+
+    <link rel="icon" href="./assets/icon/logo-rx-icon.png">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!--HEADER-->
+    <header class="header">
+        <div class="container">
+            <a href="./index.html"><img src="./assets/imgs/logo-menu.png" alt="logotipo-rx-monitoramento"></a>
+            <nav id="nav" class="nav">
+                <button onclick="toogleMenu()" class="btn-mobile">
+                    <span class="hamburguer"></span>
+                </button>
+                <ul class="menu">
+                    <li class="agora">Home</li>
+                    <li> <a href = 'mailto:contato@monitoratendimento.com.br'>Fale Conosco</a></li>
+                    <li><a href="./login-usuarios.html">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!--BANNER-->
+    <div class="banner">
+        <img src="./assets/imgs/banner-rxmonitoramento.jpg" alt="banner-rxmonitoramento">
+    </div>
+
+    <!--ENTENDA COMO O MONITORAMENTO...-->
+    <div class="entenda_como">
+        <div class="container">
+            <h1>Entenda como o monitoramento de computadores do setor de atendimento pode ajudar seu negócio!</h1>
+            <p>
+                Pacientes reclamando, antendentes insatisfeitos e desinteressados, computadores lentos e filas enormes.
+                O resultado disso com certeza é prejuízo e um ambinete ruim tando para pacientes quanto para
+                colaboradores. A RXmonitoramento oferece um sistema exclusico e eficiente de momitoramento de
+                computadores usados no
+                setor de atendimento, sejam eles usados para abertura de fichas, marcação de consultas e exames, entrega
+                de resultados, etc.
+            </p>
+        </div>
+    </div>
+
+    <!--DE QUALQUER LUGAR, TUDOQ EU VOCÊ PRECISA SABER...-->
+
+    <div class="bloco-conteudo">
+
+        <div class="tudo_que">
+            <div class="container">
+                <h2>De qualquer lugar, tudo que você precisa saber sobre o computador</h2>
+                <div class="conteudo">
+                    <img src="./assets/imgs/como_funciona1.jpg">
+                    <p>
+                        Por meio do nosso sistema, independendente de onde você esteja, apenas estando contectado a
+                        internet
+                        é possível gerenciar o uso dos computadores através de gráficos, relatórios e alertas
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!--TECNOLOGIA DE PONTA COM O MELHOR...-->
+        <div class="tecnologia">
+            <div class="container">
+                <h2>Tecnologia de ponta com o melhor custo benefício para sua empresa</h2>
+                <div class="conteudo">
+                    <img src="./assets/imgs/como_funciona2.jpg" width="60%" height="50%">
+                    <p>
+                        A RXmonitoramento oferece um sistema estável e confiável já que dispõe do que há de melhor em
+                        tecnologia, utilizando ferramentas atuais e em constante aprimoramento.
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MISSAO-VISAO-VALORES  -->
+
+    <div class="mvv">
+        <div class="container">
+            <div class="conteudo">
+                <div>
+                    <h1>Missão</h1>
+                    <p>Fornecer o melhor serviço de monitoramento de hardware, respeitando ética profissional, visando a
+                        satisfação dos nossos clientes através da excelência de nossos serviços
+                    </p>
+                </div>
+                <div>
+                    <h1>Visão</h1>
+                    <p>Ser a empresa referência em monitoramento hardware, sempre inovando em tecnologia e qualidade de
+                        nossos produtos e serviços com responsabilidade social
+                    </p>
+                </div>
+                <div>
+                    <h1>Valores</h1>
+                    <p>Inovação, responsabilidade, ética, comprometimento com clientes, fornecedores e a sociedade.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- COMO FUNCIONA -->
+    <!-- <div class="como_funciona">
+        <a name="como_funciona"></a>
+        <div class="container">
+            <h1>Como Funciona</h1>
+            <div class="conteudo">
+                <p class="paragrafoVideo">Assista a um breve vídeo explicativo mostrando as funcionalidade do nosso
+                    sistema. <br>
+                    <br>
+                    Caso ainda tenha dúvidas, fique a vontade para entrar em contato com nosso suporte clicando no botão
+                    abaixo: <br>
+                    <br>
+                    <button class="botao-video"
+                        onclick="window.location.href = 'mailto:contato@monitoratendimento.com.br'">Fale
+                        Conosco</button>
+                </p>
+                <img src="./assets/imgs/play-rx.jpg" width="500px">
+            </div>
+        </div>
+    </div> -->
+
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <div class="container">
+            <h4>Created by Grupo 5 - 2ADSA &copy; 2022</h4>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script>
+    // MENU MOBILE 
+    function toogleMenu() {
+        const nav = document.getElementById('nav');
+        nav.classList.toggle('active');
+    }
+</script>
+
+<script>
+    window.fwSettings = {
+        'widget_id': 72000002645
+    };
+    !function () { if ("function" != typeof window.FreshworksWidget) { var n = function () { n.q.push(arguments) }; n.q = [], window.FreshworksWidget = n } }() 
+</script>
+<script type='text/javascript' src='https://widget.freshworks.com/widgets/72000002645.js' async defer></script>

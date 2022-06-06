@@ -1,0 +1,11 @@
+
+  {
+    "name": "projeto-rxmonitoramento",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+      "start": "node ./api-projeto-site/app.js",
+      "postinstall": "cd api-projeto-site && npm install"
+    }
+  }
+

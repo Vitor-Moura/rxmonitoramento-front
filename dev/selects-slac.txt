@@ -1,0 +1,165 @@
+-- SELECTS SLAC
+
+-- QUANTAS MÁQUINAS ESTÃO EM ESTADO CRÍTICO NESSE MOMENTO(CPU, MEMÓRIA OU DISCO ACIMADE 80%)
+SELECT 	COUNT (maquina.id)
+FROM 	maquina
+JOIN 	componentes
+ON		maquina.id=componentes.fkMaquina
+JOIN	agoraComponente
+ON 		agoraComponente.fkComponentes=componentes.id
+WHERE 	agoraComponente.cpuAgora >= 80
+OR	 	ROUND((100 * agoraComponente.memoriaAgora / componentes.memoriaGb),0) >= 80
+OR	 	ROUND((100 * agoraComponente.discoAgora / componentes.discoGb),0) >= 80;
+
+
+
+-- QUAIS MÁQUINAS ESTÃO EM ESTADO CRÍTICO NESSE MOMENTO(CPU, MEMÓRIA OU DISCO ACIMA DE 80%)
+SELECT 	maquina.id AS 'MAQUINA ID',
+		ROUND((agoraComponente.cpuAgora),0) AS '% CPU EM USO',
+		ROUND((100 * agoraComponente.memoriaAgora / componentes.memoriaGb),0) AS '% MEMÓRIA EM USO',
+		ROUND((100 * agoraComponente.discoAgora / componentes.discoGb),0) AS '% DISCO EM USO'
+FROM 	maquina
+JOIN 	componentes
+ON		maquina.id=componentes.fkMaquina
+JOIN	agoraComponente
+ON 		agoraComponente.fkComponentes=componentes.id
+WHERE 	agoraComponente.cpuAgora >= 80
+OR	 	ROUND((100 * agoraComponente.memoriaAgora / componentes.memoriaGb),0) >= 80
+OR	 	ROUND((100 * agoraComponente.discoAgora / componentes.discoGb),0) >= 80;
+
+
+
+
+
+-- QUANTIDADE DE MÁQUINAS COM CPU ACIMA DE 80% 
+SELECT 	COUNT (maquina.id)
+FROM 	maquina
+JOIN 	componentes
+ON		maquina.id=componentes.fkMaquina
+JOIN	agoraComponente
+ON 		agoraComponente.fkComponentes=componentes.id
+WHERE 	agoraComponente.cpuAgora >= 80;
+
+
+-- QUAIS MAQUINAS QUE ESTÃO COM CPU ACIMA DE 80% NESTE MOMENTO
+SELECT 	maquina.id AS 'MAQUINA ID',
+		ROUND((agoraComponente.cpuAgora),0) AS '% CPU EM USO'
+FROM 	maquina
+JOIN 	componentes
+ON		maquina.id=componentes.fkMaquina
+JOIN	agoraComponente
+ON 		agoraComponente.fkComponentes=componentes.id
+WHERE 	agoraComponente.cpuAgora >= 80;
+
+
+
+-- QUANTIDADE DE MAQUINAS COM MEMÓRIA ACIMA DE 80% NESTE MOMENTO
+SELECT 	COUNT (maquina.id)
+FROM 	maquina
+JOIN 	componentes
+ON		maquina.id=componentes.fkMaquina
+JOIN	agoraComponente
+ON 		agoraComponente.fkComponentes=componentes.id
+WHERE  	ROUND((100 * agoraComponente.memoriaAgora / componentes.memoriaGb),0) >= 80;
+
+
+
+-- QUAIS MAQUINAS QUE ESTÃO COM MEMÓRIA ACIMA DE 80% NESTE MOMENTO
+SELECT 	maquina.id AS 'MAQUINA ID',
+		ROUND((100 * agoraComponente.memoriaAgora / componentes.memoriaGb),0) AS '% MEMÓRIA EM USO'
+FROM 	maquina
+JOIN 	componentes
+ON		maquina.id=componentes.fkMaquina
+JOIN	agoraComponente
+ON 		agoraComponente.fkComponentes=componentes.id
+WHERE  	ROUND((100 * agoraComponente.memoriaAgora / componentes.memoriaGb),0) >= 80;
+
+
+
+
+-- QUANTIDADE DE MAQUINAS COM DISCO ACIMA DE 80% NESTE MOMENTO
+SELECT 	COUNT (maquina.id)
+FROM 	maquina
+JOIN 	componentes
+ON		maquina.id=componentes.fkMaquina
+JOIN	agoraComponente
+ON 		agoraComponente.fkComponentes=componentes.id
+WHERE  	ROUND((100 * agoraComponente.discoAgora / componentes.discoGb),0) >= 80;
+
+
+
+-- QUAIS MAQUINAS QUE ESTÃO COM DISCO ACIMA DE 80% NESTE MOMENTO
+SELECT 	maquina.id AS 'MAQUINA ID',
+		ROUND((100 * agoraComponente.discoAgora / componentes.discoGb),0) AS '% DISCO EM USO'
+FROM 	maquina
+JOIN 	componentes
+ON		maquina.id=componentes.fkMaquina
+JOIN	agoraComponente
+ON 		agoraComponente.fkComponentes=componentes.id
+WHERE  	ROUND((100 * agoraComponente.discoAgora / componentes.discoGb),0) >= 80;
+
+
+
+
+-- STATUS E USUÁRIO LOGADO DE UMA MÁQUINA ESPECÍFICA
+
+SELECT TOP 1	usuario.nome AS 'USUÁRIO',
+		usuarioMaquina.dataHoraLogin AS 'LOGIN',
+		usuarioMaquina.dataHoraLogout AS 'LOGOUT',
+		usuarioMaquina.estado AS 'STATUS'
+FROM		usuarioMaquina
+JOIN		usuario
+ON		usuario.id=usuarioMaquina.fkUsuario
+WHERE		usuario.id=usuarioMaquina.fkUsuario 		
+AND 		fkMaquina= 400
+ORDER BY	usuarioMaquina.id DESC;
+
+
+
+
+-- CARACTERÍSTICAS DE UMA MÁQUINA ESPECÍFICA
+
+SELECT TOP 1					
+		setor.nome AS 'SETOR',
+		usuario.nome AS 'SUPERVISOR',
+		maquina.sistemaOp AS 'SISTEMA OPERACIONAL',
+    		CONCAT (ROUND((componentes.cpuCompPor / (1024 * 1024 * 1024)),2), ' GHz' ) AS 'CPU TOTAL',
+                CONCAT (ROUND((componentes.memoriaGb),2), ' GB') AS 'MEMÓRIA TOTAL',
+                CONCAT (round((componentes.discoGb),2), ' GB') AS 'DISCO TOTAL'
+FROM		maquina
+JOIN		componentes
+ON		componentes.fkMaquina=maquina.id
+JOIN		setor
+ON		maquina.fkSetor=setor.id
+JOIN		usuario
+ON		usuario.fkSetor=setor.id
+WHERE      	maquina.id = 400;
+
+
+-- QUANTIDADE DE MAQUINAS LIGADAS
+SELECT 	COUNT (maquina.id) AS 'QUANTIDADE DE MÁQUINAS LIGADAS'
+FROM 	maquina
+JOIN 	usuariomaquina
+ON		maquina.id=usuarioMaquina.fkMaquina
+WHERE 	usuarioMaquina.estado = 'ligado';
+
+
+-- QUAIS MAQUINAS ESTÃO LIGADAS
+SELECT DISTINCT (usuarioMaquina.fkMaquina) AS 'ID DAS MÁQUINAS LIGADAS'
+FROM 			usuariomaquina
+WHERE 			usuarioMaquina.estado = 'ligado';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

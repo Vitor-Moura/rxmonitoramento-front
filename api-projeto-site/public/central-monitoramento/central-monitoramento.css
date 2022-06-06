@@ -1,0 +1,431 @@
+body {
+    background: linear-gradient(#4f5065, #00c0e8);
+    color: white;
+
+}
+
+button {
+    cursor: pointer;
+}
+
+/* HEADER */
+.header img {
+    height: 50px;
+}
+
+.header h2 {
+    margin: 0px;
+    padding: 0px;
+}
+
+.header .voltar_sair {
+    cursor: pointer;
+}
+
+/* CENTRAL */
+.container_dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.botoes_cadastro {
+    display: flex;
+    margin: 5px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: -15px;
+}
+
+.botoes_cadastro button {
+    width: 160px;
+    margin: 5px;
+}
+
+.btn_engrenagem {
+    /* float: right; */
+    cursor: pointer;
+    font-size: 30px;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: -20px;
+}
+
+
+/* GRÁFICOS */
+.borda {
+    border: 1px solid white;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+}
+
+.borda:hover {
+    box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.24);
+    transition: 0.3s;
+}
+
+.graficos_container {
+    width: 100%;
+    text-align: center;
+}
+
+
+.graficos_container input {
+    height: 26px;
+}
+
+.usoCPUMemoria {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 10px;
+
+}
+
+.cpuTodos,
+.memoriaTodos {
+    position: relative;
+    height: 90%;
+    width: 90%;
+    padding: 1%;
+}
+
+.cpuAgora,
+.memoriaAgora,
+.discoAgora {
+    position: relative;
+    height: 350px;
+    width: 350px;
+    padding: 5px;
+}
+
+.cards {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 10px;
+}
+
+.cards b {
+    font-size: 28px;
+}
+
+.card1,
+.card2,
+.card3,
+.card4,
+.card5 {
+    position: relative;
+    width: 200px;
+    height: 70px;
+    padding: 5px;
+    background-color: rgba(53, 218, 12, 0.60);
+    margin: 5px;
+    cursor: pointer;
+}
+
+.card1:hover,
+.card2:hover,
+.card3:hover,
+.card4:hover,
+.card5:hover {
+    box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.24);
+    transition: 0.3s;
+}
+
+.resposta_card {
+    border: 1px solid white;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    width: 700px;
+    padding: 5px 5px 20px 5px;
+    display: none;
+}
+
+.resposta_card .sair {
+    float: right;
+    border: 1px solid white;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 1px 6px 3px 6px;
+    cursor: pointer;
+}
+
+
+.chartLine {
+    align-items: center;
+    margin: 10px;
+}
+
+.agoraCPUMemoriaDisco {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.lista_maquina_agora {
+    display: flex;
+    justify-content: center;
+    text-align: initial;
+    margin: 20px 10px;
+}
+
+.lista_maquina_agora .dados1,
+.lista_maquina_agora .dados2,
+.lista_maquina_agora .dados3,
+.lista_maquina_agora .dados4 {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+
+
+.id_mostrar_ocultar_processos img {
+    width: 30px;
+    margin: 0px 0px -3px 5px;
+    cursor: pointer;
+}
+
+.lista_processos {
+    display: flex;
+    justify-content: center;
+    text-align: initial;
+    margin: -10px 10px 10px 10px;
+}
+
+.lista_processos .colunaP1,
+.lista_processos .colunaP2,
+.lista_processos .colunaP3,
+.lista_processos .colunaP4 {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+
+
+
+.maquina_ativa {
+    width: 70%;
+    height: 30%;
+    display: inline-block;
+}
+
+.status_maquina {
+    width: 30%;
+    display: inline-flex;
+    /* flex-direction: row;s */
+    justify-content: center;
+    padding: 3%;
+    text-align: end;
+}
+
+.status_maquina span {
+    display: flex;
+    align-self: flex-start;
+}
+
+
+
+.status_maquina .ligado,
+.status_maquina .desligado {
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    margin: 0px 5px 0px 30px;
+
+}
+
+
+
+.tamanho {
+    width: 100px;
+}
+
+
+/* LISTA DE MAQUINAS */
+.lista_maquinas_container {
+    width: 100%;
+    text-align: center;
+}
+
+.lista_maquinas_container img {
+    width: 30px;
+    margin: 0px 0px -3px 5px;
+    cursor: pointer;
+}
+
+
+.lista_maquinas {
+    padding: 20px 100px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
+
+.lista_com_img {
+    display: flex;
+    /* justify-content: space-between; */
+    margin-bottom: 20px;
+}
+
+.lista_com_img .fa-desktop {
+    font-size: 80px;
+    margin-right: 40px;
+}
+
+.lista_com_img .dados1,
+.lista_com_img .dados2 {
+    width: 300px;
+    margin-right: 20px;
+}
+
+
+
+
+/* MOBILE */
+@media screen and (max-width: 420px) {
+
+    /* HEADER */
+    .header img {
+        display: none;
+    }
+
+    .header h2 {
+        font-size: 14px;
+    }
+
+    .header span {
+        font-size: 10px;
+    }
+
+
+    .botoes_cadastro {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 5px 5px 25px 5px;
+    }
+
+    .cards {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 10px;
+    }
+
+    .cards b {
+        font-size: 28px;
+    }
+
+    .resposta_card {
+        border: 1px solid white;
+        margin-bottom: 5px;
+        padding-bottom: 5px;
+        width: 80%;
+        padding: 5px 5px 20px 5px;
+        display: none;
+    }
+
+    .resposta_card .sair {
+        float: right;
+        border: 1px solid white;
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 0.5px 3px 1.5px 3px;
+        cursor: pointer;
+    }
+
+    .ipt_id_maquina {
+        width: 186px;
+        margin-bottom: 10px;
+    }
+
+    .usoCPUMemoria {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 10px;
+    }
+
+    .cpuTodos,
+    .memoriaTodos {
+        position: relative;
+        height: 150px;
+        width: 100%;
+        padding: 1%;
+    }
+
+    .cpuTodos canvas,
+    .memoriaTodos canvas {
+        height: 150%;
+    }
+
+    .agoraCPUMemoriaDisco {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cpuAgora,
+    .memoriaAgora,
+    .discoAgora {
+        position: relative;
+        height: 220px;
+        width: 220px;
+        padding: 2px;
+    }
+
+    .lista_maquina_agora {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .lista_maquina_agora .dados1,
+    .lista_maquina_agora .dados2,
+    .lista_maquina_agora .dados3 {
+        text-align: left;
+        margin: 2px 5px 0px 15px;
+    }
+
+    .lista_maquina_agora h2 {
+        font-size: 18px;
+        text-align: center;
+    }
+
+
+
+    .chart1e2 {
+        width: 100%;
+        display: block;
+        /* align-items: center;
+        margin-left: 3%; */
+    }
+
+    .status_maquina {
+        width: 80%;
+        margin-bottom: 25px;
+    }
+
+    .maquina_ativa {
+        width: 70%;
+        height: 30%;
+        display: inline-block;
+    }
+
+    /* LISTA DE MAQUINAS */
+    .lista_maquinas {
+        text-align: left;
+        padding: 5px;
+        margin: 0px 5px 0px 15px;
+    }
+
+    .lista_com_img {
+        display: flex;
+        flex-direction: column;
+        margin: 0px;
+    }
+
+    .lista_com_img .fa-desktop {
+        font-size: 50px;
+    }
+
+}

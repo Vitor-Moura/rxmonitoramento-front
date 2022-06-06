@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RX monitoramento | Altarar Maquinas</title>
+
+
+    <script src="./js/funcoes.js"></script>
+
+
+    <link rel="icon" href="./assets/icon/logo-rx-icon.png">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body onload="validarSessaoUsuarios()">
+    <div class="body_sem_footer">
+        <!--HEADER-->
+        <div class="header" id="header_cadastro">
+            <div class="container">
+                <!-- <span id="b_usuario"></span> -->
+                <div onclick="window.location.href = './central-monitoramento/central-monitoramento.html'">
+                    <h2 class="voltar_sair">🢤 Voltar</h2>
+                </div>
+                <img src="..\assets\imgs\logo-central.png" alt="logotipo-rxmonitoramento">
+                <div onclick="limparSessaoUsuarios()">
+                    <h2 class="voltar_sair">Sair ➩</h2>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- FORMUÁRIO ALTERAR MAQUINAS -->
+        <div class="cadastro_login">
+            <div class="container ">
+                <div class="card_cadastro_maquinas">
+                    <h2>Altearar Máquina</h2>
+                    <div class="formulario">
+                        <span id="pesquisar" class="pesquisar" onclick="pesquisar()">autocompletar</span>
+                        <form id="form_alterar" class="form_alterar" method="post" onsubmit="return alterar()">
+                            ID:
+                            <input name="idMaquina" id="ipt_idMaquina" type="text"
+                                placeholder="401">
+                            <br>
+                            Hostname:
+                            <input name="hostname" id="ipt_hostname" type="text" placeholder="HTD359276">
+                            <br>
+                            Sistema Operacional:
+                            <input name="sistemaOp" id="ipt_sistemaOp" type="text" placeholder="Windows">
+                            <br>
+                            Código do Setor:
+                            <input name="fkSetor" id="ipt_fkSetor" type="text" placeholder="300">
+                            <br>
+
+                            <button class="btn">Alterar</button>
+                        </form>
+                    </div>
+                    <!-- <div id="div_aguardar" class="loading-div">
+                        <img src="./assets/imgs/circle-loading.gif" id="loading-gif">
+                    </div> -->
+
+                    <div id="div_erros_login">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--FOOTER-->
+    <div class="footer">
+        <div class="container">
+            <h4>Created by Grupo 5 - 2ADSA &copy; 2022</h4>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script>
+    // PEREENCHER DADOS DA MÁQUINA
+    function pesquisar() {
+        var idMaquina = ipt_idMaquina.value;
+
+        fetch(`/maquinas/pesquisarMaquina/${idMaquina}`, { method: 'get' }).then(function (resultado) {
+            console.log("resultado: " + resultado);
+            resultado.json().then(function (resultadoFormatado) {
+                console.log("RESULTADO FORMATADO:", resultadoFormatado);
+                for (var i = 0; i < resultadoFormatado.length; i++) {
+                    var ax_hostname = resultadoFormatado[resultadoFormatado.length - 1].hostname;
+                    var ax_sistemaOp = resultadoFormatado[resultadoFormatado.length - 1].sistemaOp;
+                    var ax_fkSetor = resultadoFormatado[resultadoFormatado.length - 1].fkSetor;
+                    ipt_hostname.value = ax_hostname;
+                    ipt_sistemaOp.value = ax_sistemaOp;
+                    ipt_fkSetor.value = ax_fkSetor;
+                }
+            })
+        }).catch(function (erro) {
+        });
+    }
+
+
+    // ALTERAR MÁQUINA NO BANCO DE DADOS
+    function limparFormulario() {
+        document.getElementById("form_alterar").reset();
+    }
+
+    function alterar() {
+        // aguardar();
+
+        var formulario = new URLSearchParams(new FormData(document.getElementById("form_alterar")));
+
+        var idMaquina = formulario.get("idMaquina");
+        var hostname = formulario.get("hostname");
+        var sistemaOp = formulario.get("sistemaOp");
+        var fkSetor = formulario.get("fkSetor");
+
+        // VALIDAÇÃO DE CAMPO
+        if (idMaquina == "" || hostname == "" || sistemaOp == "" || fkSetor == "") {
+
+            window.alert("Preencha todos os campos para prosseguir!");
+            if (idMaquina == "") {
+                console.log('idMaquina está em branco')
+            }
+            if (hostname == "") {
+                console.log('hostname está em branco')
+            }
+            if (sistemaOp == "") {
+                console.log('sistemaOp está em branco')
+            }
+            if (fkSetor == "") {
+                console.log('fkSetor está em branco')
+            }
+            // finalizarAguardar();
+            return false;
+        }
+
+
+        fetch("/maquinas/alterar", {
+            method: "POST",
+            body: formulario
+        }).then(function (resposta) {
+
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                window.alert("Alteração realizada com sucesso!");
+                limparFormulario();
+                // finalizarAguardar();
+                window.location.reload();
+            } else {
+                throw ("Houve um erro ao tentar realizar a alteração!");
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+            // finalizarAguardar();
+        });
+
+        return false;
+    }
+
+
+    // MENU MOBILE 
+    function toogleMenu() {
+        const nav = document.getElementById('nav');
+        nav.classList.toggle('active');
+    }
+
+</script>
+
+<script>
+    window.fwSettings = {
+        'widget_id': 72000002645
+    };
+    !function () { if ("function" != typeof window.FreshworksWidget) { var n = function () { n.q.push(arguments) }; n.q = [], window.FreshworksWidget = n } }() 
+</script>
+<script type='text/javascript' src='https://widget.freshworks.com/widgets/72000002645.js' async defer></script>

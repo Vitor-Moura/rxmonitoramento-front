@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RX monitoramento | Central de monitoramento</title>
+
+    <script src="../js/funcoes.js"></script>
+
+    <link rel="icon" href="../assets/icon/logo-rx-icon.png">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="central-monitoramento.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body onload="validarSessaoUsuarios()">
+
+    <!--HEADER-->
+    <div class="header">
+        <div class="container">
+            <span id="b_usuario" class="b_usuario"></span>
+            <img src="..\assets\imgs\logo-central.png" alt="logotipo-rxmonitoramento">
+            <div onclick="limparSessaoUsuarios()">
+                <h2 class="voltar_sair">Sair ➩</h2>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="container">
+
+        <!-- BOTÕES DE CADASTRO -->
+        <div class="btn_engrenagem" id="btn_engrenagem" onclick="mostrar_botoes_cadastro()"><b>⚙</b></div>
+        <div class="botoes_cadastro" id="botoes_cadastro" style="display: none;">
+            <button id="btn_hospital" onclick="window.location.href = '../cadastro-hospitais.html'">Cadastrar
+                Hospital</button>
+            <button id="btn_setor" onclick="window.location.href = '../cadastro-setor.html'">Cadastrar
+                Setor</button>
+            <button id="btn_usuario" onclick="window.location.href = '../cadastro-usuarios.html'">Cadastrar
+                Usuário</button>
+            <button id="btn_maquina" onclick="window.location.href = '../cadastro-maquinas.html'">Cadastrar
+                Máquina</button>
+            <button id="btn_alterar_maquina" onclick="window.location.href = '../alterar-maquinas.html'">Alterar
+                Máquina</button>
+            <button id="btn_excluir_maquina" onclick="window.location.href = '../excluir-maquinas.html'">Excluir
+                Máquina</button>
+        </div>
+
+
+        <div class="container_dashboard">
+            <div class="graficos_container">
+                <!-- CARDS -->
+                <div class="borda">
+                    <div class="cards">
+                        <div id="card1" class="card1"></div>
+                        <div id="card2" class="card2"></div>
+                        <div id="card3" class="card3"></div>
+                        <div id="card4" class="card4"></div>
+                        <div id="card5" class="card5"></div>
+                    </div>
+                    <div id="resposta_card" class="resposta_card"></div>
+                </div>
+
+                <!-- GRÁFICOS MÉDIA E PICO -->
+                <div class="borda">
+                    <div class="usoCPUMemoria">
+                        <div class="cpuTodos">
+                            <canvas id="chartCPU"></canvas>
+                        </div>
+                        <div class="memoriaTodos">
+                            <canvas id="chartMemoria"></canvas>
+                        </div>
+                    </div>
+                    <!-- <div>
+                        <canvas id="chartLine"
+                            style="position: relative; height: 100%; width: 100%; padding: 3%"></canvas>
+                    </div> -->
+                </div>
+
+                <!-- ACOMPANHE EM TEMPO REAL -->
+                <div class="borda">
+                    <h2>Acompanhe em tempo real </h2>
+                    <input type="text" id="ipt_id_maquina" class="ipt_id_maquina" placeholder="Digite o id da_maquina">
+                    <button id="bt_porMaquina" onclick="porMaquina()">Monitorar em tempo real</button>
+                    <button id="bt_porMaquinaParar" onclick="porMaquinaParar()" style="display: none;">Parar
+                        monitoramento em tempo real</button>
+                    <div id="lista_maquina_agora" class="lista_maquina_agora"></div>
+
+                    <div id="id_mostrar_ocultar_processos" class="id_mostrar_ocultar_processos" style="display: none;">
+                        <h2>Mostrar Processos
+                            <img src="..\assets\imgs\visualizar.png" id="id_monstrar_processos""
+                            onclick=" mostrar_processos()" style="display: inline-flex;">
+                            <img src="..\assets\imgs\ocultar.png" id="id_ocultar_processos"
+                                onclick="ocultar_processos()" style="display: none;">
+                        </h2>
+                    </div>
+
+                    <div id="lista_processos" class="lista_processos" style="display: none;">
+                        <div id="colunaP1" class="colunaP1"></div>
+                        <div id="colunaP2" class="colunaP1"></div>
+                        <div id="colunaP3" class="colunaP1"></div>
+                        <div id="colunaP4" class="colunaP1"></div>
+                    </div>
+
+
+                    <div class="agoraCPUMemoriaDisco">
+                        <div class="cpuAgora">
+                            <canvas id="agoraCPU"></canvas>
+                        </div>
+                        <div class="memoriaAgora">
+                            <canvas id="agoraMemoria"></canvas>
+                        </div>
+                        <div class="discoAgora">
+                            <canvas id="agoraDisco"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LISTA DE TODAS AS MAQUINAS MONITORADAS -->
+                <div class="borda">
+                    <div id="lista_maquinas_container" class="lista_maquinas_container">
+                        <h2>Veja aqui a relação das maquinas monitoradas
+                            <img src="..\assets\imgs\visualizar.png" id="visualizar" onclick="mostrar_lista()"
+                                style="display: inline-flex;">
+                            <img src="..\assets\imgs\ocultar.png" id="ocultar" onclick="ocultar_lista()"
+                                style="display: none;">
+                        </h2>
+                        <div id="status_maquina" class="status_maquina" style="display: none;">
+                            <div class="ligado" style="background-color: rgba(53, 218, 12, 0.90);"></div>
+                            <span>Ligado</span>
+                            <div class="desligado" style="background-color: rgba(255, 26, 26, 0.90);"></div>
+                            <span>Desligado</span>
+                        </div>
+                        <div id="lista_maquinas" class="lista_maquinas" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--FOOTER-->
+    <div class="footer">
+        <div class="container">
+            <h4>Created by Grupo 5 - 2ADSA &copy; 2022</h4>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script>
+    atualizarTodos();
+    function atualizarTodos() {
+        funCard1();
+        funCard2();
+        funCard3();
+        funCard4();
+        funCard5();
+        funGrafico1();
+        funGrafico2();
+        setTimeout(atualizarTodos, 5000);
+    }
+    // funListarTodas();
+
+
+    // FUNÇÃO MOSTRAR/OCULTAR BOTÕES DE CADASTRO
+    function mostrar_botoes_cadastro() {
+        if (botoes_cadastro.style.display == 'none') {
+            botoes_cadastro.style.display = 'flex';
+            btn_engrenagem.style.float = 'right';
+        }
+        else {
+            botoes_cadastro.style.display = 'none';
+            btn_engrenagem.style.float = ''
+        }
+    }
+
+    // FUNÇÃO CARD1 - QUANTIDADE DE MAQUINAS DESLIGADAS
+    function funCard1() {
+        fetch('/maquinas/qtdDesligado', { method: 'get' }).then(function (resultado) {
+            console.log("resultado: " + resultado);
+            resultado.json().then(function (resultadoFormatado) {
+                console.log("RESULTADO FORMATADO:", resultadoFormatado);
+                for (var i = 0; i < resultadoFormatado.length; i++) {
+                    var ax_countLigado = resultadoFormatado[i].countDesligado;
+                    card1.innerHTML = `
+                    Inoperante<br>
+                    <b>${ax_countLigado}</b>
+                    `;
+                }
+            })
+        }).catch(function (erro) {
+        });
+    }
+
+    // FUNÇÃO CARD1 - MOSTRAR MAQUINAS DESLIGADAS
+    {
+        document.getElementById("card1").onclick = function () {
+
+            resposta_card.style.display = 'inline-block';
+            resposta_card.innerHTML = `<span id="sair" class="sair" onclick="sair()">x</span>
+                                    <h3>Lista de máquinas Desligadas</h3>`;
+
+            fetch('/maquinas/maquinasDesligadas', { method: 'get' }).then(function (resultado) {
+                console.log("resultado: " + resultado);
+                resultado.json().then(function (resultadoFormatado) {
+                    console.log("RESULTADO FORMATADO:", resultadoFormatado);
+                    for (var i = 0; i < resultadoFormatado.length; i++) {
+                        var ax_idMaquina = resultadoFormatado[i].idMaquina;
+                        resposta_card.innerHTML += `                  
+                    <br><b>Maquina ID:</b> ${ax_idMaquina}<br>
+                    `;
+                    }
+                })
+            }).catch(function (erro) {
+            });
+        };
+        function sair() {
+            resposta_card.style.display = 'none';
+        }
+    }    
+   
+    // FUNÇÃO CARD2 - QUANTIDADE DE MAQUINAS LIGADAS
+    function funCard2() {
+        fetch('/maquinas/qtdLigado', { method: 'get' }).then(function (resultado) {
+            console.log("resultado: " + resultado);
+            resultado.json().then(function (resultadoFormatado) {
+                console.log("RESULTADO FORMATADO:", resultadoFormatado);
+                for (var i = 0; i < resultadoFormatado.length; i++) {
+                    var ax_countLigado = resultadoFormatado[i].countLigado;
+                    card2.innerHTML = `
+                    Operando<br>
+                    <b>${ax_countLigado}</b>
+                    `;
+                }
+            })
+        }).catch(function (erro) {
+        });
+    }
+
+    // FUNÇÃO CARD2 - MOSTRAR MAQUINAS LIGADAS
+    {
+        document.getElementById("card2").onclick = function () {
+
+            resposta_card.style.display = 'inline-block';
+            resposta_card.innerHTML = `<span id="sair" class="sair" onclick="sair()">x</span>
+                                    <h3>Lista de máquinas ligadas</h3>`;
+
+            fetch('/maquinas/maquinasLigadas', { method: 'get' }).then(function (resultado) {
+                console.log("resultado: " + resultado);
+                resultado.json().then(function (resultadoFormatado) {
+                    console.log("RESULTADO FORMATADO:", resultadoFormatado);
+                    for (var i = 0; i < resultadoFormatado.length; i++) {
+                        var ax_idMaquina = resultadoFormatado[i].idMaquina;
+                        resposta_card.innerHTML += `                  
+                    <br><b>Maquina ID:</b> ${ax_idMaquina}<br>
+                    `;
+                    }
+                })
+            }).catch(function (erro) {
+            });
+        };
+        function sair() {
+            resposta_card.style.display = 'none';
+        }
+    }
+
+    // FUNÇÃO CARD3 - QUANTIDADE DE MAQUINAS COM CPU CRÍTICO
+    function funCard3() {
+
+        fetch('/maquinas/qtdCriticoCPU', { method: 'get' }).then(function (resultado) {
+            console.log("resultado: " + resultado);
+            resultado.json().then(function (resultadoFormatado) {
+                console.log("RESULTADO FORMATADO:", resultadoFormatado);
+                for (var i = 0; i < resultadoFormatado.length; i++) {
+                    var ax_countCriticoCPU = resultadoFormatado[i].countCriticoCPU;
+                }
+                if (ax_countCriticoCPU > 0) {
+                    card3.style.backgroundColor = 'rgba(255, 26, 26, 0.60)';
+                } else {
+                    card3.style.backgroundColor = 'rgba(53, 218, 12, 0.60)';
+                }
+                card3.innerHTML = `
+                    CPU Crítico<br>
+                    <b>${ax_countCriticoCPU}</b>
+                    `;
+            })
+        }).catch(function (erro) {
+        });
+    }
+
+    // FUNÇÃO CARD3 - MOSTRAR MAQUINAS EM COM CPU CRÍTICO
+    {
+        document.getElementById("card3").onclick = function () {
+
+            resposta_card.style.display = 'inline-block';
+            resposta_card.innerHTML = `<span id="sair" class="sair" onclick="sair()">x</span>
+                                    <h3>Lista de máquinas com CPU em estado crítico</h3>`;
+
+
+            fetch('/maquinas/maquinasCriticoCPU', { method: 'get' }).then(function (resultado) {
+                console.log("resultado: " + resultado);
+                resultado.json().then(function (resultadoFormatado) {
+                    console.log("RESULTADO FORMATADO:", resultadoFormatado);
+                    for (var i = 0; i < resultadoFormatado.length; i++) {
+                        var ax_idMaquina = resultadoFormatado[i].idMaquina;
+                        var ax_cpuEmUso = resultadoFormatado[i].cpuEmUso;
+                        resposta_card.innerHTML += `                  
+                    <br><b>Maquina ID:</b> ${ax_idMaquina} - <b>CPU em uso:</b> ${ax_cpuEmUso}%</b><br>
+                    `;
+                    }
+                })
+            }).catch(function (erro) {
+            });
+
+        };
+        function sair() {
+            resposta_card.style.display = 'none';
+        }
+    }
+
+    // FUNÇÃO CARD4 - QUANTIDADE DE MAQUINAS COM MEMÓRIA CRÍTICA
+    function funCard4() {
+        fetch('/maquinas/qtdCriticoMemoria', { method: 'get' }).then(function (resultado) {
+            console.log("resultado: " + resultado);
+            resultado.json().then(function (resultadoFormatado) {
+                console.log("RESULTADO FORMATADO:", resultadoFormatado);
+                for (var i = 0; i < resultadoFormatado.length; i++) {
+                    var ax_countCriticoMemoria = resultadoFormatado[i].countCriticoMemoria;
+                }
+                card4.innerHTML = `
+                    Memória Crítica<br>
+                    <b>${ax_countCriticoMemoria}</b>
+                    `;
+                if (ax_countCriticoMemoria > 0) {
+                    card4.style.backgroundColor = 'rgba(255, 26, 26, 0.60)';
+                } else {
+                    card4.style.backgroundColor = 'rgba(53, 218, 12, 0.60)';
+                }
+            })
+        }).catch(function (erro) {
+        });
+    }
+
+    // FUNÇÃO CARD4 - MOSTRAR MAQUINAS EM COM MEMÓRIA CRÍTICA
+    {
+        document.getElementById("card4").onclick = function () {
+
+            resposta_card.style.display = 'inline-block';
+            resposta_card.innerHTML = `<span id="sair" class="sair" onclick="sair()">x</span>
+                                    <h3>Lista de máquinas com memória em estado crítico</h3>`;
+
+
+            fetch('/maquinas/maquinasCriticoMemoria', { method: 'get' }).then(function (resultado) {
+                console.log("resultado: " + resultado);
+                resultado.json().then(function (resultadoFormatado) {
+                    console.log("RESULTADO FORMATADO:", resultadoFormatado);
+                    for (var i = 0; i < resultadoFormatado.length; i++) {
+                        var ax_idMaquina = resultadoFormatado[i].idMaquina;
+                        var ax_memoriaEmUso = resultadoFormatado[i].memoriaEmUso;
+                        resposta_card.innerHTML += `                  
+                    <br><b>Maquina ID:</b> ${ax_idMaquina} - <b>Memória em uso:</b> ${ax_memoriaEmUso}%</b><br>
+                    `;
+                    }
+                })
+            }).catch(function (erro) {
+            });
+        };
+        function sair() {
+            resposta_card.style.display = 'none';
+        }
+    }
+
+    // FUNÇÃO CARD5 - QUANTIDADE DE MAQUINAS COM DISCO CRÍTICO
+    function funCard5() {
+        fetch('/maquinas/qtdCriticoDisco', { method: 'get' }).then(function (resultado) {
+            console.log("resultado: " + resultado);
+            resultado.json().then(function (resultadoFormatado) {
+                console.log("RESULTADO FORMATADO:", resultadoFormatado);
+                for (var i = 0; i < resultadoFormatado.length; i++) {
+                    var ax_countCriticoDisco = resultadoFormatado[i].countCriticoDisco;
+                }
+                card5.innerHTML = `
+                Disco Crítico<br>
+                <b>${ax_countCriticoDisco}</b>
+                `;
+                if (ax_countCriticoDisco > 0) {
+                    card5.style.backgroundColor = 'rgba(255, 26, 26, 0.60)';
+                } else {
+                    card5.style.backgroundColor = 'rgba(53, 218, 12, 0.60)';
+                }
+            })
+        }).catch(function (erro) {
+        });
+    }
+
+    // FUNÇÃO CARD5 - MOSTRAR MAQUINAS EM COM DISCO CRÍTICO
+    {
+        document.getElementById("card5").onclick = function () {
+
+            resposta_card.style.display = 'inline-block';
+            resposta_card.innerHTML = `<span id="sair" class="sair" onclick="sair()">x</span>
+                                    <h3>Lista de máquinas com disco em estado crítico</h3>`;
+
+
+            fetch('/maquinas/maquinasCriticoDisco', { method: 'get' }).then(function (resultado) {
+                console.log("resultado: " + resultado);
+                resultado.json().then(function (resultadoFormatado) {
+                    console.log("RESULTADO FORMATADO:", resultadoFormatado);
+                    for (var i = 0; i < resultadoFormatado.length; i++) {
+                        var ax_idMaquina = resultadoFormatado[i].idMaquina;
+                        var ax_discoEmUso = resultadoFormatado[i].discoEmUso;
+                        resposta_card.innerHTML += `                  
+                    <br><b>Maquina ID:</b> ${ax_idMaquina} - <b>Disco em uso:</b> ${ax_discoEmUso}%</b><br>
+                    `;
+                    }
+                })
+            }).catch(function (erro) {
+            });
+        };
+        function sair() {
+            resposta_card.style.display = 'none';
+        }
+    }
+
+    // FUNÇÃO GRÁFICO 1 - CPU - LISTAR MÉDIA E PICOS DE TODAS AS MÁQUINAS
+    var vt_id_maquina_cpu = [];
+    var vt_media_cpu = [];
+    var vt_max_cpu = [];
+    function funGrafico1() {
+        vt_id_maquina_cpu = [];
+        vt_media_cpu = [];
+        vt_max_cpu = [];
+        fetch('/maquinas/listarUsoCPU', { method: 'get' }).then(function (resultado) {
+            console.log("resultado: " + resultado);
+            resultado.json().then(function (resultadoFormatado) {
+                console.log("RESULTADO FORMATADO:", resultadoFormatado);
+                for (var i = 0; i < resultadoFormatado.length; i++) {
+                    var ax_maquinaId = resultadoFormatado[i].maquinaId;
+                    var ax_mediaPorcentagemCPU = resultadoFormatado[i].mediaPorcentagemCPU;
+                    var ax_picoPorcentagemCPU = resultadoFormatado[i].picoPorcentagemCPU;
+                    vt_id_maquina_cpu.push(ax_maquinaId);
+                    vt_media_cpu.push(ax_mediaPorcentagemCPU);
+                    vt_max_cpu.push(ax_picoPorcentagemCPU);
+                }
+                myChartCPU.update();
+
+            })
+        }).catch(function (erro) {
+        });
+    }
+
+    // CANVAS GRÁFICO 1 - CPU - GRÁFICO MÉDIA E PICO
+    {
+        var ctx = document.getElementById('chartCPU').getContext('2d');
+
+        var myChartCPU = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: vt_id_maquina_cpu,
+                datasets: [{
+                    label: '% Média',
+                    data: vt_media_cpu,
+                    backgroundColor: [
+                        '#00c0e8'
+                    ]
+                },
+                {
+                    label: '% Pico',
+                    data: vt_max_cpu,
+                    backgroundColor: [
+                        'rgba(255, 26, 26, 0.90)'
+                    ]
+                }
+                ]
+            },
+            // gráfico Y começando do zero e termiando no 100 
+            options: {
+                plugins: {  // 'legend' now within object 'plugins {}'
+                    legend: {
+                        // display: false
+                        labels: {
+                            color: "white",
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Uso da CPU (%)',
+                        color: 'white',
+                        font: {
+                            size: 20
+                        }
+                    },
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            color: "white",
+                        },
+                        grid: {
+                            color: "#ffffff4a",
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: "white",
+                        },
+                        grid: {
+                            color: "#ffffff4a",
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // FUNÇÃO GRÁFICO 2 - MEMÓRIA - LISTAR MÉDIA E PICOS DE TODAS AS MÁQUINAS
+    var vt_id_maquina_memoria = [];
+    var vt_media_memoria = [];
+    var vt_max_memoria = [];
+    function funGrafico2() {
+        vt_id_maquina_memoria = [];
+        vt_media_memoria = [];
+        vt_max_memoria = [];
+        fetch('/maquinas/listarUsoMemoria', { method: 'get' }).then(function (resultado) {
+            console.log("resultado: " + resultado);
+            resultado.json().then(function (resultadoFormatado) {
+                console.log("RESULTADO FORMATADO:", resultadoFormatado);
+                for (var i = 0; i < resultadoFormatado.length; i++) {
+                    var ax_maquinaId = resultadoFormatado[i].maquinaId;
+                    var ax_mediaPorcentagemMemoria = resultadoFormatado[i].mediaPorcentagemMemoria;
+                    var ax_picoPorcentagemMemoria = resultadoFormatado[i].picoPorcentagemMemoria;
+
+                    vt_id_maquina_memoria.push(ax_maquinaId);
+                    vt_media_memoria.push(ax_mediaPorcentagemMemoria);
+                    vt_max_memoria.push(ax_picoPorcentagemMemoria);
+                }
+                myChartMemoria.update();
+
+            })
+        }).catch(function (erro) {
+        });
+    }
+
+    // CANVAS GRÁFICO 2 - MEMÓRIA - GRÁFICO MÉDIA E PICO
+    {
+        var ctx = document.getElementById('chartMemoria').getContext('2d');
+
+        var myChartMemoria = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: vt_id_maquina_memoria,
+                datasets: [{
+                    label: '% Média',
+                    data: vt_media_memoria,
+                    backgroundColor: [
+                        '#00c0e8'
+                    ]
+                },
+                {
+                    label: '% Pico',
+                    data: vt_max_memoria,
+                    backgroundColor: [
+                        'rgba(255, 26, 26, 0.90)'
+                    ]
+                }
+                ]
+            },
+            // gráfico Y começando do zero e termiando no 100 
+            options: {
+                plugins: {  // 'legend' now within object 'plugins {}'
+                    legend: {
+                        // display: false
+                        labels: {
+                            color: "white",
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Uso da Memória (%)',
+                        color: 'white',
+                        font: {
+                            size: 20
+                        }
+                    },
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            color: "white",
+                        },
+                        grid: {
+                            color: "#ffffff4a",
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: "white",
+                        },
+                        grid: {
+                            color: "#ffffff4a",
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // FUNÇÃO ACOMPANHE EM TEMPO REAL - CPU, MEMEÓRIA E DISCO
+    {
+        var vt_agora_cpu = [];
+        var vt_agora_memoria = [];
+        var vt_agora_disco = [];
+        var idMaquina;
+        var ax_dataHoraLogin;
+        var ax_dataHoraLogout;
+        var ax_estado;
+        var ax_nomeUsuarioLogado;
+
+        function porMaquinaParar() {
+            location.reload();
+        }
+
+        function mostrar_processos() {
+            lista_processos.style.display = 'flex';
+            id_monstrar_processos.style.display = 'none';
+            id_ocultar_processos.style.display = 'inline-flex';
+            processos();
+        }
+
+        function ocultar_processos() {
+            lista_processos.style.display = 'none';
+            id_monstrar_processos.style.display = 'inline-flex';
+            id_ocultar_processos.style.display = 'none';
+        }
+
+        function porMaquina() {
+
+            bt_porMaquina.style.display = "none";
+            ipt_id_maquina.style.display = "none";
+            bt_porMaquinaParar.style.display = "inline-block";
+            id_mostrar_ocultar_processos.style.display = "inline-block";
+
+            idMaquina = ipt_id_maquina.value;
+
+            if (idMaquina == '') {
+                alert(`Informe o ID da máquina!`)
+            }
+            else {
+                function obterDados() {
+
+
+                    fetch(`/maquinas/listarUsuarioMaquina/${idMaquina}`, { method: 'get' }).then(function (resultado) {
+                        console.log("resultado: " + resultado);
+                        resultado.json().then(function (resultadoFormatado) {
+                            console.log("RESULTADO FORMATADO:", resultadoFormatado);
+                            for (var i = 0; i < resultadoFormatado.length; i++) {
+                                ax_dataHoraLogin = resultadoFormatado[resultadoFormatado.length - 1].dataHoraLogin;
+                                ax_dataHoraLogout = resultadoFormatado[resultadoFormatado.length - 1].dataHoraLogout;
+                                ax_estado = resultadoFormatado[resultadoFormatado.length - 1].estado;
+                                ax_nomeUsuarioLogado = resultadoFormatado[resultadoFormatado.length - 1].nomeUsuarioLogado;
+                            }
+
+                            if (ax_dataHoraLogout == null) {
+                                ax_dataHoraLogout = "";
+                            }
+                        })
+                    }).catch(function (erro) {
+                    });
+
+
+                    vt_agora_cpu.pop();
+                    vt_agora_memoria.pop();
+                    vt_agora_disco.pop();
+                    fetch(`/maquinas/listarPorMaquina/${idMaquina}`, { method: 'get' }).then(function (resultado) {
+                        console.log("resultado: " + resultado);
+                        resultado.json().then(function (resultadoFormatado) {
+                            console.log("RESULTADO FORMATADO:", resultadoFormatado);
+                            for (var i = 0; i < resultadoFormatado.length; i++) {
+                                var ax_agoraPorcentagemCPU = resultadoFormatado[resultadoFormatado.length - 1].agoraPorcentagemCPU;
+                                var ax_agoraPorcentagemMemoria = resultadoFormatado[resultadoFormatado.length - 1].agoraPorcentagemMemoria;
+                                var ax_agoraPorcentagemDisco = resultadoFormatado[resultadoFormatado.length - 1].agoraPorcentagemDisco;
+                                var ax_hostname = resultadoFormatado[resultadoFormatado.length - 1].hostname;
+                                var ax_sistemaOperacional = resultadoFormatado[resultadoFormatado.length - 1].sistemaOperacional;
+                                var ax_nomeSetor = resultadoFormatado[resultadoFormatado.length - 1].nomeSetor;
+                                var ax_nomeSupervisor = resultadoFormatado[resultadoFormatado.length - 1].nomeSupervisor;
+                                var ax_compCPU = resultadoFormatado[resultadoFormatado.length - 1].compCPU;
+                                var ax_compMemoria = resultadoFormatado[resultadoFormatado.length - 1].compMemoria;
+                                var ax_compDisco = resultadoFormatado[resultadoFormatado.length - 1].compDisco;
+                            }
+                            if (ax_estado == 'desligado') {
+                                ax_agoraPorcentagemCPU = 0;
+                                ax_agoraPorcentagemMemoria = 0;
+                                ax_agoraPorcentagemDisco = 0;
+                            }
+
+                            vt_agora_cpu.push(ax_agoraPorcentagemCPU);
+                            vt_agora_memoria.push(ax_agoraPorcentagemMemoria);
+                            vt_agora_disco.push(ax_agoraPorcentagemDisco);
+                            myChartAgoraCPU.update();
+                            myChartAgoraMemoria.update();
+                            myChartAgoraDisco.update();
+
+                            lista_maquina_agora.innerHTML = `<br><br>
+                                <div class="dados1">
+                                <b>Operado por:</b> ${ax_nomeUsuarioLogado}<br>
+                                <b>Hostname:</b> ${ax_hostname}<br>
+                                <b>ID da máquina:</b> ${idMaquina}<br>
+                                </div>
+                                <div class="dados2">
+                                <b>Estado:</b> ${ax_estado}<br>
+                                <b>Ligada Desde:</b> ${ax_dataHoraLogin}<br>
+                                <b>Desligada Desde:</b> ${ax_dataHoraLogout}<br>
+                                </div>               
+                                <div class="dados3">
+                                <b>Setor:</b> ${ax_nomeSetor}<br>
+                                <b>Supervisor:</b> ${ax_nomeSupervisor}<br>
+                                <b>Sistema Operacional:</b> ${ax_sistemaOperacional}<br>
+                                </div>
+                                <div class="dados4">
+                                <b>CPU Total:</b> ${ax_compCPU} GHz<br>
+                                <b>Memoria Total:</b> ${ax_compMemoria} GB<br>
+                                <b>Disco Total:</b> ${ax_compDisco} GB<br>
+                                </div>
+                                <br>
+                                </div>`;
+
+                        })
+                    }).catch(function (erro) {
+                    });
+                    setTimeout(obterDados, 5000);
+                }
+                obterDados();
+            }
+            // apagando o campo de input 
+            ipt_id_maquina.value = '';
+        }
+
+        // LISTAR 40 PROCESSOS
+
+        function processos() {
+            colunaP1.innerHTML = '';
+            colunaP2.innerHTML = '';
+            colunaP3.innerHTML = '';
+            colunaP4.innerHTML = '';
+
+            fetch(`/maquinas/listarProcessosCPU/${idMaquina}`, { method: 'get' }).then(function (resultado) {
+                console.log("resultado: " + resultado);
+                resultado.json().then(function (resultadoFormatado) {
+                    console.log("RESULTADO FORMATADO:", resultadoFormatado);
+                    for (var i = 0; i < resultadoFormatado.length; i++) {
+                        ax_nomeProcesso = resultadoFormatado[i].nomeProcesso;
+                        if (i <= 9) {
+                            colunaP1.innerHTML += `${ax_nomeProcesso}<br>`;
+                        } else if (i <= 19) {
+                            colunaP2.innerHTML += `${ax_nomeProcesso}<br>`;
+                        } else if (i <= 29) {
+                            colunaP3.innerHTML += `${ax_nomeProcesso}<br>`;
+                        } else if (i <= 39) {
+                            colunaP4.innerHTML += `${ax_nomeProcesso}<br>`;
+                        }
+                    }
+                })
+            }).catch(function (erro) {
+            });
+        }
+
+    }
+
+    // CANVAS CPU - ACOMPANHE EM TEMPO REAL
+    {
+        const data = {
+            labels: ['Bom', 'Medio', 'Ruim'],
+            datasets: [{
+                label: 'Média de uso da CPU',
+                data: [50, 30, 20],
+                backgroundColor: [
+                    'rgba(53, 218, 12, 0.90)',
+                    'rgba(255, 206, 86, 0.90)',
+                    'rgba(255, 26, 26, 0.90)'
+                ],
+                // VALOR DO PONTEIRO
+                needleValue: vt_agora_cpu,
+                borderColor: '#00c0e860',
+                borderWidth: 2,
+                cutout: '90%',
+                circumference: 180,
+                rotation: 270,
+                borderRadius: 5,
+            }]
+        };
+        //GAUGENEEDLE
+        const gaugeNeedle = {
+            id: 'gaugeNeedle',
+            afterDatasetDraw(chart, args, options) {
+                const { ctx, config, data, chartArea: { top, botton, left, right,
+                    width, height } } = chart;
+
+                ctx.save();
+                const needleValue = data.datasets[0].needleValue;
+                const dataTotal = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                const angle = Math.PI + (1 / dataTotal * needleValue * Math.PI);
+
+                const cx = width / 2;
+                const cy = chart._metasets[0].data[0].y;
+
+                //NEEDLE
+                ctx.translate(cx, cy);
+                ctx.rotate(angle);
+                ctx.beginPath();
+                ctx.moveTo(0, -3);
+                // AJUSTAR TAMNHO DO PONTEIRO
+                ctx.lineTo(height - (ctx.canvas.offsetTop + 190), 0);
+                ctx.lineTo(0, 3);
+                ctx.fillStyle = 'white';
+                ctx.fill();
+                //ctx.restore();
+
+                // NEEDLE DOT
+                ctx.translate(-cx, -cy);
+                ctx.beginPath();
+                ctx.arc(cx, cy, 5, 0, 10);
+                ctx.fill();
+                ctx.restore();
+
+                ctx.font = '50px Helvetica';
+                ctx.fillStyle = 'white';
+                ctx.fillText(needleValue + '%', cx, cy + 50);
+                ctx.textAlign = 'center';
+                ctx.restore();
+            }
+        };
+        // config 
+        const config = {
+            type: 'doughnut',
+            data,
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: `CPU`,
+                        padding: {
+                            top: 30,
+                            bottom: -100
+                        },
+                        color: 'white',
+                        font: {
+                            size: 20
+                        }
+
+                    },
+                    legend: {
+                        display: false,
+                    },
+                    tooltip: {
+                        yAlign: 'bottom',
+                        displayColors: false,
+                        callbacks: {
+                            label: function (tooltipItem, data, value) {
+                                const tracker = tooltipItem.dataset.needleValue;
+                                return `Uso CPU: ${tracker} %`;
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [gaugeNeedle]
+        };
+        // render init block
+        var myChartAgoraCPU = new Chart(
+            document.getElementById('agoraCPU'),
+            config
+        );
+    }
+
+    // CANVAS MEMÓRIA - ACOMPANHE EM TEMPO REAL
+    {
+        const data = {
+            labels: ['Bom', 'Medio', 'Ruim'],
+            datasets: [{
+                label: 'Usp da memória em tempo real',
+                data: [50, 30, 20],
+                backgroundColor: [
+                    'rgba(53, 218, 12, 0.90)',
+                    'rgba(255, 206, 86, 0.90)',
+                    'rgba(255, 26, 26, 0.90)'
+                ],
+                // VALOR DO PONTEIRO
+                needleValue: vt_agora_memoria,
+                borderColor: '#00c0e860',
+                borderWidth: 2,
+                cutout: '90%',
+                circumference: 180,
+                rotation: 270,
+                borderRadius: 5,
+            }]
+        };
+        //GAUGENEEDLE
+        const gaugeNeedle = {
+            id: 'gaugeNeedle',
+            afterDatasetDraw(chart, args, options) {
+                const { ctx, config, data, chartArea: { top, botton, left, right,
+                    width, height } } = chart;
+
+                ctx.save();
+                const needleValue = data.datasets[0].needleValue;
+                const dataTotal = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                const angle = Math.PI + (1 / dataTotal * needleValue * Math.PI);
+
+                const cx = width / 2;
+                const cy = chart._metasets[0].data[0].y;
+
+                //NEEDLE
+                ctx.translate(cx, cy);
+                ctx.rotate(angle);
+                ctx.beginPath();
+                ctx.moveTo(0, -3);
+                // AJUSTAR TAMANHO DO PONTEIRO
+                ctx.lineTo(height - (ctx.canvas.offsetTop + 190), 0);
+                ctx.lineTo(0, 3);
+                ctx.fillStyle = 'white';
+                ctx.fill();
+                //ctx.restore();
+
+                // NEEDLE DOT
+                ctx.translate(-cx, -cy);
+                ctx.beginPath();
+                ctx.arc(cx, cy, 5, 0, 10);
+                ctx.fill();
+                ctx.restore();
+
+                ctx.font = '50px Helvetica';
+                ctx.fillStyle = 'white';
+                ctx.fillText(needleValue + '%', cx, cy + 50);
+                ctx.textAlign = 'center';
+                ctx.restore();
+            }
+        };
+        // config 
+        const config = {
+            type: 'doughnut',
+            data,
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: `MEMÓRIA`,
+                        padding: {
+                            top: 30,
+                            bottom: -100
+                        },
+                        color: 'white',
+                        font: {
+                            size: 20
+                        }
+
+                    },
+                    legend: {
+                        display: false,
+                    },
+                    tooltip: {
+                        yAlign: 'bottom',
+                        displayColors: false,
+                        callbacks: {
+                            label: function (tooltipItem, data, value) {
+                                const tracker = tooltipItem.dataset.needleValue;
+                                return `Uso Memória: ${tracker} %`;
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [gaugeNeedle]
+        };
+        // render init block
+        var myChartAgoraMemoria = new Chart(
+            document.getElementById('agoraMemoria'),
+            config
+        );
+    }
+
+    // CANVAS PONTEIRO - ACOMPANHE EM TEMPO REAL
+    {
+        const data = {
+            labels: ['Bom', 'Medio', 'Ruim'],
+            datasets: [{
+                label: 'Usp da memória em tempo real',
+                data: [50, 30, 20],
+                backgroundColor: [
+                    'rgba(53, 218, 12, 0.90)',
+                    'rgba(255, 206, 86, 0.90)',
+                    'rgba(255, 26, 26, 0.90)'
+                ],
+                // VALOR DO PONTEIRO
+                needleValue: vt_agora_disco,
+                borderColor: '#00c0e860',
+                borderWidth: 2,
+                cutout: '90%',
+                circumference: 180,
+                rotation: 270,
+                borderRadius: 5,
+            }]
+        };
+        //GAUGENEEDLE
+        const gaugeNeedle = {
+            id: 'gaugeNeedle',
+            afterDatasetDraw(chart, args, options) {
+                const { ctx, config, data, chartArea: { top, botton, left, right,
+                    width, height } } = chart;
+
+                ctx.save();
+                const needleValue = data.datasets[0].needleValue;
+                const dataTotal = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                const angle = Math.PI + (1 / dataTotal * needleValue * Math.PI);
+
+                const cx = width / 2;
+                const cy = chart._metasets[0].data[0].y;
+
+                //NEEDLE
+                ctx.translate(cx, cy);
+                ctx.rotate(angle);
+                ctx.beginPath();
+                ctx.moveTo(0, -3);
+                // AJUSTAR TAMANHO DO PONTEIRO
+                ctx.lineTo(height - (ctx.canvas.offsetTop + 190), 0);
+                ctx.lineTo(0, 3);
+                ctx.fillStyle = 'white';
+                ctx.fill();
+                //ctx.restore();
+
+                // NEEDLE DOT
+                ctx.translate(-cx, -cy);
+                ctx.beginPath();
+                ctx.arc(cx, cy, 5, 0, 10);
+                ctx.fill();
+                ctx.restore();
+
+                ctx.font = '50px Helvetica';
+                ctx.fillStyle = 'white';
+                ctx.fillText(needleValue + '%', cx, cy + 50);
+                ctx.textAlign = 'center';
+                ctx.restore();
+            }
+        };
+        // config 
+        const config = {
+            type: 'doughnut',
+            data,
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: `DISCO`,
+                        padding: {
+                            top: 30,
+                            bottom: -100
+                        },
+                        color: 'white',
+                        font: {
+                            size: 20
+                        }
+
+                    },
+                    legend: {
+                        display: false,
+                    },
+                    tooltip: {
+                        yAlign: 'bottom',
+                        displayColors: false,
+                        callbacks: {
+                            label: function (tooltipItem, data, value) {
+                                const tracker = tooltipItem.dataset.needleValue;
+                                return `Uso Memória: ${tracker} %`;
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [gaugeNeedle]
+        };
+        // render init block
+        var myChartAgoraDisco = new Chart(
+            document.getElementById('agoraDisco'),
+            config
+        );
+    }
+
+
+    //GRAFICO DE LINHA
+    // {
+    //     var ctx = document.getElementById('chartLine').getContext('2d');
+
+    //     var myChart = new Chart(ctx, {
+    //         type: 'line',
+    //         data: {
+    //             labels: ['1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h', '10h', '11h', '12h',
+    //                 '13h', '14h', '15h', '16h', '17h', '18h', '19h', '20h', '21h', '22h', '23h', '24h'],
+    //             datasets: [
+
+    //                 {
+    //                     label: 'Processos em tempo real',
+    //                     data: [12, 34, 43, 34, 56, 10, 20, 60],
+    //                     backgroundColor: [
+    //                         '#00c0e8',
+    //                         '#00c0e8',
+    //                         '#00c0e8',
+    //                         '#00c0e8',
+    //                         '#00c0e8',
+    //                         '#00c0e8',
+    //                         '#00c0e8',
+    //                         '#00c0e8',
+    //                         '#00c0e8',
+    //                         '#00c0e8'
+    //                     ],
+
+    //                     borderColor: [
+    //                         '#00c0e8',
+    //                         '#00c0e8',
+    //                         '#00c0e8',
+    //                         '#00c0e8',
+    //                         '#00c0e8',
+    //                         '#00c0e8',
+    //                         '#00c0e8',
+    //                         '#00c0e8',
+    //                         '#00c0e8',
+    //                         '#00c0e8'
+    //                     ],
+    //                     borderWidth: 2.5
+    //                 }
+
+    //             ]
+    //         },
+    //         options: {
+    //             plugins: {
+    //                 legend: {
+    //                     labels: {
+    //                         color: "white",
+    //                     }
+    //                 }
+    //             },
+    //             scales: {
+    //                 y: {
+    //                     beginAtZero: true,
+    //                     max: 100,
+    //                     ticks: {
+    //                         color: "white",
+    //                     },
+    //                     grid: {
+    //                         color: "#ffffff4a",
+    //                     }
+    //                 },
+    //                 x: {
+    //                     ticks: {
+    //                         color: "white",
+    //                     },
+    //                     grid: {
+    //                         color: "#ffffff4a",
+    //                     }
+    //                 }
+
+    //             }
+    //         }
+    //     });
+    // }
+
+    // FUNÇÃO LISTAR TODAS AS MAQUINAS MONITORADAS
+    function mostrar_lista() {
+        status_maquina.style.display = 'inline-flex';
+        lista_maquinas.style.display = 'flex';
+        visualizar.style.display = 'none';
+        ocultar.style.display = 'inline-flex';
+        funListarTodas();
+    }
+
+    function ocultar_lista() {
+        status_maquina.style.display = 'none';
+        lista_maquinas.style.display = 'none';
+        visualizar.style.display = 'inline-flex';
+        ocultar.style.display = 'none';
+    }
+
+    function funListarTodas() {
+
+        lista_maquinas.innerHTML = '';
+
+        fetch('/maquinas/listarTodas', { method: 'get' }).then(function (resultado) {
+            console.log("resultado: " + resultado);
+            resultado.json().then(function (resultadoFormatado) {
+                console.log("RESULTADO FORMATADO:", resultadoFormatado);
+                for (var i = 0; i < resultadoFormatado.length; i++) {
+                    var ax_maquinaId = resultadoFormatado[i].maquinaId;
+                    var ax_hostname = resultadoFormatado[i].hostname;
+                    var ax_sistemaOperacional = resultadoFormatado[i].sistemaOperacional;
+                    var ax_nomeSetor = resultadoFormatado[i].nomeSetor;
+                    var ax_nomeSupervisor = resultadoFormatado[i].nomeSupervisor;
+                    var ax_compCPU = resultadoFormatado[i].compCPU;
+                    var ax_compMemoria = resultadoFormatado[i].compMemoria;
+                    var ax_compDisco = resultadoFormatado[i].compDisco;
+                    var ax_estado = resultadoFormatado[i].estado;
+
+                    if (ax_estado == 'desligado') {
+                        corPC = 'rgba(255, 26, 26, 0.90)'
+                    } else if (ax_estado == 'ligado') {
+                        corPC = 'rgba(53, 218, 12, 0.90)'
+                    }
+
+                    lista_maquinas.innerHTML += `
+                <div class="lista_com_img">                
+                <div>                
+                <i class='fa fa-desktop' style="color: ${corPC};"></i>
+                </div>
+                <div class="dados1">
+                <b>Maquina ID: ${ax_maquinaId}</b><br>
+                Hostname: ${ax_hostname}<br>
+                Setor: ${ax_nomeSetor}<br>
+                Supervisor: ${ax_nomeSupervisor}<br>
+                </div>
+                <div class="dados2">
+                Sistema Operacional: ${ax_sistemaOperacional}<br>
+                CPU: ${ax_compCPU} GHz<br>
+                Memoria: ${ax_compMemoria} GB<br>
+                Disco: ${ax_compDisco} GB<br>
+                </div>
+                <br>
+                </div>
+                </div>`;
+                }
+            })
+        }).catch(function (erro) {
+        });
+
+
+    }
+
+</script>
+
+<script>
+    window.fwSettings = {
+        'widget_id': 72000002645
+    };
+    !function () { if ("function" != typeof window.FreshworksWidget) { var n = function () { n.q.push(arguments) }; n.q = [], window.FreshworksWidget = n } }() 
+</script>
+<script type='text/javascript' src='https://widget.freshworks.com/widgets/72000002645.js' async defer></script>

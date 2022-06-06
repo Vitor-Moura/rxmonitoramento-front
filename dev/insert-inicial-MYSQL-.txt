@@ -1,0 +1,7 @@
+INSERT INTO hospital VALUES (100, 'Hospital Paulista', 'Diogo de Faria', '780', 'Vila Clementino', '04037-002');
+
+INSERT INTO setor VALUES (300, 'Atendimento', 100),(301, 'Pronto Socorro', 100),(308, 'Pediatria', 100),(309, 'Ortopedia', 100);
+
+INSERT INTO usuario VALUES (202, 'Vitor Moura', 'vitor@rxmonitoramento.com.br', 'grupo5', 1, 100, 300, null),(228, 'Raylane Fernandes', 'raylane@rxmonitoramento.com.br', 'grupo5', 2, 100, 300, 202),(229,  'Silvio Moraes', 'silvio@rxmonitoramento.com.br', 'grupo5', 3, 100, 301, 228),(230, 'Simone Pereira', 'simone@rxmonitoramento.com.br', 'grupo5', 3, 100, 308, 228),(231, 'Sandra Ramos', 'sandra@rxmonitoramento.com.br', 'grupo5', 3, 100, 309, 228),(232, 'Thiago Cordeiro', 'thiago@rxmonitoramento.com.br', 'grupo5', 4, 100, 301, 229),(233, 'Gabriel Santos', 'gabriel@rxmonitoramento.com.br', 'grupo5', 4, 100, 308, 230),(234, 'Matheus Eloy', 'matheus@rxmonitoramento.com.br', 'grupo5', 4, 100, 309, 231),(235, 'Vinícius Moraes', 'vinicius@rxmonitoramento.com.br', 'grupo5', 4, 100, 301, 229);
+
+INSERT INTO maquina VALUES (400, 'macOS', 'Johns-MacBook-Air.local', 1, 1, 1, 308),(431, 'Ubuntu', 'ip-172-31-81-86', 1, 1, 1, 300),(430, 'Ubuntu', 'ip-172-31-25-149', 1, 1, 1, 300), (428, 'Ubuntu', 'ip-172-31-28-69', 1, 1, 1,300),(427, 'Ubuntu', 'ip-172-31-28-15', 1, 1, 1, 300),(427, 'Ubuntu', 'ip-172-31-28-15', 1, 1, 1, 300),(432, 'Ubuntu', 'ip-172-31-23-96', 1, 1, 1, 308);

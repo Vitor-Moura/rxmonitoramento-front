@@ -1,0 +1,18 @@
+CREATE DATABASE rxmonitoramento;
+USE rxmonitoramento;
+
+CREATE TABLE hospital (id INT PRIMARY KEY AUTO_INCREMENT,nome VARCHAR(45),rua VARCHAR(45),numero VARCHAR(45),bairro VARCHAR(45),cep CHAR(9)) AUTO_INCREMENT 100;
+
+CREATE TABLE setor(id INT PRIMARY KEY AUTO_INCREMENT, nome VARCHAR(45),fkHospital INT, FOREIGN KEY (fkHospital) REFERENCES hospital (id)) AUTO_INCREMENT  300;
+
+CREATE TABLE usuario (id INT PRIMARY KEY AUTO_INCREMENT,nome VARCHAR(45),email VARCHAR(45),senha VARCHAR(45),nivelPermissao INT,fkHospital INT,fkSetor INT, fkSupervisor INT, FOREIGN KEY (fkSetor) REFERENCES setor (id),FOREIGN KEY (fkSupervisor) REFERENCES usuario (id)) AUTO_INCREMENT 200;
+
+CREATE TABLE maquina (id INT PRIMARY KEY AUTO_INCREMENT,sistemaOp VARCHAR(45),hostname VARCHAR(45),cpuCRUD INT,memoriaCRUD INT,discoCRUD INT,fkSetor INT, FOREIGN KEY (fkSetor) REFERENCES setor (id)) AUTO_INCREMENT 400;
+
+CREATE TABLE usuarioMaquina(id INT PRIMARY KEY AUTO_INCREMENT,dataHoraLogin VARCHAR(20),dataHoraLogout VARCHAR(20),estado INT,fkUsuario INT,fkMaquina INT, FOREIGN KEY (fkMaquina) REFERENCES maquina(id),FOREIGN KEY (fkUsuario) REFERENCES usuario (id)) AUTO_INCREMENT 200;
+
+CREATE TABLE componentes (id INT PRIMARY KEY AUTO_INCREMENT,cpuCompPor DOUBLE,memoriaGb DOUBLE,discoGb DOUBLE,fkMaquina INT,dataHora VARCHAR(20), FOREIGN KEY (fkMaquina) REFERENCES maquina (id)) AUTO_INCREMENT 500;
+
+CREATE TABLE historicoComponente (id INT PRIMARY KEY AUTO_INCREMENT,cpuHist DOUBLE,memoriaHist DOUBLE,discoHist DOUBLE,dataHora VARCHAR(20),fkComponentes INT, FOREIGN KEY (fkComponentes) REFERENCES componentes (id));
+
+CREATE TABLE processos (id INT PRIMARY KEY AUTO_INCREMENT,nomeProcesso VARCHAR(200),cpuHist DOUBLE,memoria DOUBLE,fkComponentes INT,dataHora VARCHAR(20), FOREIGN KEY (fkComponentes) REFERENCES componentes (id)) AUTO_INCREMENT 600;

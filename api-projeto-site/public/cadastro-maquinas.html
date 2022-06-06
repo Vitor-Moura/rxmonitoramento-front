@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RX monitoramento | Cadastro de Maquinas</title>
+
+
+    <script src="./js/funcoes.js"></script>
+
+
+    <link rel="icon" href="./assets/icon/logo-rx-icon.png">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body onload="validarSessaoUsuarios()">
+    <div class="body_sem_footer">
+        <!--HEADER-->
+        <div class="header" id="header_cadastro">
+            <div class="container">
+                <!-- <span id="b_usuario"></span> -->
+                <div onclick="window.location.href = './central-monitoramento/central-monitoramento.html'">
+                    <h2 class="voltar_sair">🢤 Voltar</h2>
+                </div>
+                <img src="..\assets\imgs\logo-central.png" alt="logotipo-rxmonitoramento">
+                <div onclick="limparSessaoUsuarios()">
+                    <h2 class="voltar_sair">Sair ➩</h2>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- FORMUÁRIO CADASTRO DE MAQUINAS -->
+        <div class="cadastro_login">
+            <div class="container ">
+                <div class="card_cadastro_maquinas">
+                    <h2>Cadastrar Máquina</h2>
+                    <div class="formulario">
+                        <form id="form_cadastro" method="post" onsubmit="return cadastrar()">
+                            Hostname:
+                            <input name="hostname" type="text" placeholder="HTD359276">
+                            <br>
+                            Sistema Operacional:
+                            <input name="sistemaOp" type="text" placeholder="Windows">
+                            <br>
+                            Setor:
+                            <select name="fkSetor">
+                                <option value="">Selecione o Setor</option>
+                                <option value="301">Pronto Socorro</option>
+                                <option value="308">Pediatria</option>
+                                <option value="309">Ortopedia</option>
+                              </select>
+                            <br>
+                            <!-- Monitorar componentes:
+                            <label for="cpu">
+                                <input type="checkbox" name="cpu" value="1" checked="true"> CPU
+                            </label>
+                            <label for="memoria">
+                                <input type="checkbox" name="memoria" value="1" checked="true"> Memória
+                            </label>
+                            <label for="disco">
+                                <input type="checkbox" name="disco" value="1" checked="true"> Disco
+                            </label> -->
+
+                            <button class="btn">Cadastrar</button>
+                        </form>
+                    </div>
+                    <div id="div_aguardar" class="loading-div">
+                        <img src="./assets/imgs/circle-loading.gif" id="loading-gif">
+                    </div>
+
+                    <div id="div_erros_login">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--FOOTER-->
+    <div class="footer">
+        <div class="container">
+            <h4>Created by Grupo 5 - 2ADSA &copy; 2022</h4>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script>
+
+    function limparFormulario() {
+        document.getElementById("form_cadastro").reset();
+    }
+
+    // CADASTRAR USUÁRIO NO BANCO DE DADOS
+    function cadastrar() {
+        // aguardar();
+
+        var formulario = new URLSearchParams(new FormData(document.getElementById("form_cadastro")));
+
+        var hostname = formulario.get("hostname");
+        var sistemaOp = formulario.get("sistemaOp");
+        var fkSetor = formulario.get("fkSetor");
+
+        // VALIDAÇÃO DE CAMPO
+        if (hostname == "" || sistemaOp == "" || fkSetor == "") {
+
+            window.alert("Preencha todos os campos para prosseguir!");
+            if (hostname == "") {
+                console.log('hostname está em branco')
+            }
+            if (sistemaOp == "") {
+                console.log('sistemaOp está em branco')
+            }
+            if (fkSetor == "") {
+                console.log('fkSetor está em branco')
+            }
+            // finalizarAguardar();
+            return false;
+        }
+
+
+        fetch("/maquinas/cadastrar", {
+            method: "POST",
+            body: formulario
+        }).then(function (resposta) {
+
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                window.alert("Cadastro realizado com sucesso!");
+                limparFormulario();
+                // finalizarAguardar();
+                window.location.reload();
+            } else {
+                throw ("Houve um erro ao tentar realizar o cadastro!");
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+            // finalizarAguardar();
+        });
+
+        return false;
+    }
+
+    // MENU MOBILE 
+    function toogleMenu() {
+        const nav = document.getElementById('nav');
+        nav.classList.toggle('active');
+    }
+
+</script>
+
+<script>
+    window.fwSettings = {
+        'widget_id': 72000002645
+    };
+    !function () { if ("function" != typeof window.FreshworksWidget) { var n = function () { n.q.push(arguments) }; n.q = [], window.FreshworksWidget = n } }() 
+</script>
+<script type='text/javascript' src='https://widget.freshworks.com/widgets/72000002645.js' async defer></script>

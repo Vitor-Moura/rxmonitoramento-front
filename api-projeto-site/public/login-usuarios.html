@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RX monitoramento | Login</title>
+
+    <script src="./js/funcoes.js"></script>
+
+    <link rel="icon" href="./assets/icon/logo-rx-icon.png">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="body_sem_footer">
+        <!--HEADER-->
+        <header class="header">
+            <div class="container">
+                <a href="./index.html"><img src="./assets/imgs/logo-menu.png" alt="logotipo-rx-monitoramento"></a>
+                <nav id="nav" class="nav">
+                    <button onclick="toogleMenu()" class="btn-mobile">
+                        <span class="hamburguer"></span>
+                    </button>
+                    <ul class="menu">
+                        <li> <a href="./index.html">Home</a></li>
+                        <li> <a href = 'mailto:contato@monitoratendimento.com.br'>Fale Conosco</a></li>
+                        <li class="agora">Login</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- FORMULÁRIO LOGIN USUÁRIO -->
+        <div class="cadastro_login">
+            <div class="container">
+                <div class="card_login">
+                    <h2>Login</h2>
+                    <div class="formulario">
+                        <form id="form_login_usuarios" method="post" onsubmit="return entrar()">
+                            E-mail:
+                            <input name="email" type="text" placeholder="Login">
+                            <br>
+                            Senha:
+                            <input name="senha" type="password" placeholder="******">
+                            <br>
+                            <button class="btn" type="submit">
+                                Entrar
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- <div id="div_aguardar" class="loading-div">
+                        <img src="./assets/imgs/circle-loading.gif" id="loading-gif">
+                    </div> -->
+
+                    <div id="div_erros_login">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--FOOTER-->
+    <div class="footer">
+        <div class="container">
+            <h4>Created by Grupo 5 - 2ADSA &copy; 2022</h4>
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+<script>
+
+    function limparFormulario() {
+        document.getElementById("form_login_usuarios").reset();
+    }
+
+    //LOGANDO
+    function entrar() {
+        // aguardar();
+
+        var formulario = new URLSearchParams(new FormData(document.getElementById("form_login_usuarios")));
+
+        var email = formulario.get("email");
+        var senha = formulario.get("senha");
+
+        console.log("FORM LOGIN: ", email);
+        console.log("FORM SENHA: ", senha);
+
+        // VALIDACOES
+        if (email == "" || senha == "") {
+            window.alert("Preencha todos os campos para prosseguir!");
+            // finalizarAguardar();
+            return false;
+        }
+
+        if (email.indexOf("@") == -1 || email.indexOf(".com") == -1) {
+            window.alert("Ops, e-mail inválido! Verifique e tente novamente.");
+            // finalizarAguardar();
+            return false;
+        }
+
+        fetch("/usuarios/autenticar", {
+            method: "POST",
+            body: formulario
+        }).then(function (resposta) {
+            console.log("ESTOU NO THEN DO entrar()!")
+
+            if (resposta.ok) {
+                console.log(resposta);
+
+                resposta.json().then(json => {
+                    console.log(json);
+                    console.log(JSON.stringify(json));
+
+                    sessionStorage.EMAIL_USUARIO = json.email;
+                    sessionStorage.NOME_USUARIO = json.nome;
+                    sessionStorage.ID_USUARIO = json.id;
+                    sessionStorage.NIVELPERMISSAO_USUARIO = json.nivelPermissao;
+
+                    setTimeout(function () {
+                        window.location = "./central-monitoramento/central-monitoramento.html";
+                    }, 1000); // apenas para exibir o loading
+
+                });
+
+            } else {
+
+                console.log("Houve um erro ao tentar realizar o login!");
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                    // finalizarAguardar(texto);
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+        return false;
+    }
+
+    // MENU MOBILE 
+    function toogleMenu() {
+        const nav = document.getElementById('nav');
+        nav.classList.toggle('active');
+    }
+
+</script>
+
+<script>
+	window.fwSettings={
+	'widget_id':72000002645
+	};
+	!function(){if("function"!=typeof window.FreshworksWidget){var n=function(){n.q.push(arguments)};n.q=[],window.FreshworksWidget=n}}() 
+</script>
+<script type='text/javascript' src='https://widget.freshworks.com/widgets/72000002645.js' async defer></script>

@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'rxmonitoramento'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DCF6D523B7F9488A8D033009D3D79511 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5D8EAB44020E41C1AE3389EF005E3357 }}
           package: .
